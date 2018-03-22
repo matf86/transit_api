@@ -16,3 +16,7 @@ $router->get('/', function() {
 });
 
 $router->post('/transits', ['as' => 'transits.store', 'uses' => 'TransitsController@store']);
+
+$router->get('/reports/daily', ['as' => 'reports.daily', 'uses' => 'ReportsController@daily']);
+
+
