@@ -18,4 +18,15 @@ class ReportsController extends Controller
 
         return response()->json($result, 200);
     }
+
+    public function monthly()
+    {
+        $result = Transit::monthlyReport();
+
+        if($result->isEmpty()) {
+            return response()->json('No data for given month', 200);
+        }
+
+        return response()->json($result, 200);
+    }
 }

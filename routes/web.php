@@ -19,4 +19,6 @@ $router->post('/transits', ['as' => 'transits.store', 'uses' => 'TransitsControl
 
 $router->get('/reports/daily', ['as' => 'reports.daily', 'uses' => 'ReportsController@daily']);
 
+$router->get('/reports/monthly', ['as' => 'reports.monthly', 'uses' => 'ReportsController@monthly']);
+
 

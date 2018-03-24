@@ -62,8 +62,8 @@ class DailyReportTest extends TestCase
 
         $response->assertResponseStatus(200);
 
-        $this->assertEquals('152km', $this->response->getData()->total_distance);
-        $this->assertEquals('1810PLN', $this->response->getData()->total_price);
+        $this->assertEquals('152km', $this->response->getData()[0]->total_distance);
+        $this->assertEquals('1,810.00PLN', $this->response->getData()[0]->total_price);
     }
 
     /** @test */
@@ -90,8 +90,8 @@ class DailyReportTest extends TestCase
 
         $response->assertResponseStatus(200);
 
-        $this->assertEquals('0km', $this->response->getData()->total_distance);
-        $this->assertEquals('0PLN', $this->response->getData()->total_price);
+        $this->assertEquals('0km', $this->response->getData()[0]->total_distance);
+        $this->assertEquals('0.00PLN', $this->response->getData()[0]->total_price);
     }
 
     /** @test */

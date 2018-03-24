@@ -31,7 +31,7 @@ class AddTransitTest extends TestCase
         $this->assertEquals($payload['source_address'], $transit['source_address']);
         $this->assertEquals($payload['destination_address'], $transit['destination_address']);
         $this->assertEquals(45000, $transit['price']);
-        $this->assertEquals($payload['date'], $transit['date']);
+        $this->assertEquals($payload['date'],  $transit['date']->format('Y-m-d'));
         $this->assertNotNull($transit['distance']);
     }
 
