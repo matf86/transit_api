@@ -11,9 +11,6 @@
 |
 */
 
-$router->get('/', function() {
-    return 'Hello transport api';
-});
 
 $router->post('/transits', ['as' => 'transits.store', 'uses' => 'TransitsController@store']);
 

@@ -69,12 +69,12 @@ class DailyReportTest extends TestCase
     /** @test */
     public function generate_properly_formatted_response_when_no_data_was_found()
     {
-        $transit_01_1 = factory(\App\Transit::class)->create([
+        factory(\App\Transit::class)->create([
             'date' => '2018-03-01',
             'price'=> 50000,
             'distance' => 35000
         ]);
-        $transit_01_2 = factory(\App\Transit::class)->create([
+        factory(\App\Transit::class)->create([
             'date' => '2018-03-01',
             'price'=> 25000,
             'distance' => 25000

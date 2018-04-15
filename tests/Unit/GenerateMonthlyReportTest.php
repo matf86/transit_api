@@ -2,12 +2,13 @@
 
 use Laravel\Lumen\Testing\DatabaseMigrations;
 
-class MonthlyReportTest extends TestCase
+
+class GenerateMonthlyReportTest extends TestCase
 {
     use DatabaseMigrations;
 
     /** @test */
-    public function can_generate_monthly_report()
+    function can_generate_monthly_report()
     {
         factory(\App\Transit::class)->create([
             'date' => \Illuminate\Support\Carbon::now()->startOfMonth()->format('Y-m-d'),
@@ -45,34 +46,16 @@ class MonthlyReportTest extends TestCase
             'distance' => 245622
         ]);
 
-        $response = $this->get(route('reports.monthly'));
+        $result = \App\Services\Reports\MonthlyReport::generate();
 
-        $response->assertResponseStatus(200);
-
-        $report = $this->response->getOriginalContent();
-
-        $this->assertCount(3, $report);
-
-        $this->assertEquals('60km', $report[0]['total_distance']);
-        $this->assertEquals('30km', $report[0]['avg_distance']);
-        $this->assertEquals('375.00PLN', $report[0]['avg_price']);
-
-        $this->assertEquals('40km', $report[1]['total_distance']);
-        $this->assertEquals('40km', $report[1]['avg_distance']);
-        $this->assertEquals('550.00PLN', $report[1]['avg_price']);
-
-        $this->assertEquals('52km', $report[2]['total_distance']);
-        $this->assertEquals('26km', $report[2]['avg_distance']);
-        $this->assertEquals('255.00PLN', $report[2]['avg_price']);
+        $this->assertCount(3, $result);
     }
 
     /** @test */
-    public function generate_properly_formatted_response_when_no_data_was_found()
+    function exception_is_thrown_when_there_is_no_data_for_given_month()
     {
-        $response = $this->get(route('reports.monthly'));
+        $this->expectException(\App\Exceptions\ReportException::class);
 
-        $response->assertResponseStatus(200);
-
-        $this->assertEquals('No data for given month', $this->response->getOriginalContent());
+        $result = \App\Services\Reports\MonthlyReport::generate();
     }
 }

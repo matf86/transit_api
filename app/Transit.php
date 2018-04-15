@@ -2,11 +2,8 @@
 
 namespace App;
 
-
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
 
 class Transit extends Model
 {
@@ -18,26 +15,21 @@ class Transit extends Model
 
     public $timestamps = false;
 
-    public static function dailyReport($start_date, $end_date)
+    public static function sumUpBetween($start_date, $end_date)
     {
         return self::whereBetween('date', [$start_date, $end_date])
-                ->select(DB::raw("SUM(distance) as total_distance, SUM(price) as total_price"))
-                ->get()->map(function($item) {
-                    return [
-                        'total_distance' => $item->formatted_total_distance,
-                        'total_price' => $item->formatted_total_price
-                    ];
-                });
+            ->select(DB::raw("SUM(distance) as total_distance, SUM(price) as total_price"))
+            ->get()->map(function($item) {
+                return [
+                    'total_distance' => $item->formatted_total_distance,
+                    'total_price' => $item->formatted_total_price
+                ];
+            })->all();
     }
 
-    public static function monthlyReport()
+    public static function getDailyStatsFor($start_date, $end_date)
     {
-        $date_range = [
-            Carbon::now()->startOfMonth()->format('Y-m-d'),
-            Carbon::yesterday()->format('Y-m-d'),
-        ];
-
-        return self::whereBetween('date', $date_range)
+        return self::whereBetween('date', [$start_date, $end_date])
             ->select('date', DB::raw('SUM(distance) as total_distance, AVG(price) as avg_price, AVG(distance) as avg_distance'))
             ->groupBy('date')
             ->get()->map(function($item) {
@@ -47,7 +39,7 @@ class Transit extends Model
                     'avg_distance' => $item->formatted_average_distance,
                     'avg_price' => $item->formatted_average_price
                 ];
-            });
+            })->all();
     }
 
     protected function getFormattedDateAttribute()
